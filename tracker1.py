@@ -35,10 +35,12 @@ class tracker:
    speed=arduino_map(abs(int(dx)),0,2048,0,20)#int(arduino_map(abs(int(dx)),0,2047,0,40))
    speed*=15
    speed=round(speed)
+   if speed>50:
+       speed=50
    #speed=80
    
    if True:#(#abs(int(dx))<500):
-        if (abs(int(dx))<20):
+        if (abs(int(dx))<15):
              c2s.moveStop()
         else:
              if(int(dx)>0):
