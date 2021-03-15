@@ -16,8 +16,8 @@ class tracker:
    if(dx>2048):
         dx=dx-4096
 #            tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
-   speed=int(arduino_map(abs(int(dx)),0,2048,10,100)) 
-   if(abs(int(dx))<500):
+   speed=int(arduino_map(abs(int(dx)),0,2048,40,100)) 
+   if 1:(#abs(int(dx))<500):
         if(abs(int(dx))<10):
              c2s.moveStop()
         else:
