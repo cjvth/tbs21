@@ -18,7 +18,7 @@ def hamming_encode(data: list):
     return data
 
 
-def hamming_decode(message: list):
+def hamming_decode(message: list, need_n_errors=False):
     count = message.copy()
     x = 1
     while x <= len(count):
@@ -46,10 +46,7 @@ def hamming_decode(message: list):
     while x >= 1:
         c = count.pop(x - 1)
         x //= 2
-
-    return count
-
-
-if __name__ == '__main__':
-    print(hamming_encode([1, 0, 1, 1, 0]))
-    hamming_decode([1, 0, 1, 0, 0, 1, 1, 0, 0])
+    if not need_n_errors:
+        return count
+    else:
+        return count, need_n_errors
