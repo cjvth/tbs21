@@ -33,10 +33,10 @@ class tracker:
         dx=dx-4096
 #            tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
    speed=arduino_map(abs(int(dx)),0,2048,0,100)#int(arduino_map(abs(int(dx)),0,2047,0,40))
-   speed*=25#15
+   speed*=35#15
    speed=round(speed)
-   if speed>50:
-       speed=50
+   if speed>60:
+       speed=60
    #speed=80
    
    if True:#(#abs(int(dx))<500):
