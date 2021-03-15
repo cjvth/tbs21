@@ -12,10 +12,11 @@ class tracker:
   while i==0:
    status=c2s.getStatus()
    dx=int(status)&0x0fff
-   speed=arduino_map(abs(int(dx)),0,4096,0,100)
+   #speed=int(arduino_map(abs(int(dx)),0,4096,0,100))
    #if(dx>2048):
    #     dx=dx-4096
 #            tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
+   speed=int(arduino_map(abs(int(dx)),0,4096,0,100)) 
    if(abs(int(dx))<500):
         if(abs(int(dx))<10):
              c2s.moveStop()
