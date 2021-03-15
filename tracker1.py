@@ -35,7 +35,7 @@ class tracker:
    speed=arduino_map(abs(int(dx)),0,1023,0,5)#int(arduino_map(abs(int(dx)),0,2047,0,40))
    speed*=2
    speed=round(speed)
-   speed=9
+   speed=80
    
    if True:#(#abs(int(dx))<500):
         if (abs(int(dx))<10):
