@@ -49,4 +49,4 @@ def hamming_decode(message: list, need_n_errors=False):
     if not need_n_errors:
         return count
     else:
-        return count, need_n_errors
+        return count, bool(wrong)
