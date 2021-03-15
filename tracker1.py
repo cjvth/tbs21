@@ -40,7 +40,7 @@ class tracker:
    #speed=80
    
    if True:#(#abs(int(dx))<500):
-        if (abs(int(dx))<15):
+        if (abs(int(dx))<10):
              c2s.moveStop()
         else:
              if(int(dx)>0):
