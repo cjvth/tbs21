@@ -12,9 +12,9 @@ class tracker:
   c2s=client2server()
   i=0
   max_speed=100
-  K_p=1
-  K_d=-0.058
-  K_i=0.065
+  K_p=0.96
+  K_d=-0.055
+  K_i=0.069
   I=0
   last_dx=0
   delta_t=0.1
