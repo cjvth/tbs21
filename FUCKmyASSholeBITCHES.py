@@ -10,7 +10,7 @@ def arduino_constrain(x,min_x,max_x):
 class tracker:
  def run(tracklog):
   c2s=client2server()
-  i=0
+  i=0 
   max_speed=70
   K_p=0.98
   K_d=0.055
