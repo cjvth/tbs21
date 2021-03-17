@@ -12,7 +12,7 @@ class tracker:
   c2s=client2server()
   i=0
   max_speed=55
-  K_p=10
+  K_p=1
   K_d=0
   K_i=0
   I=0
@@ -45,6 +45,14 @@ class tracker:
    speed=arduino_constrain(speed,-max_speed,max_speed)
    tracklog.write("Received dx = {},  speed ={} , delta_t={}  \n".format(dx,speed,delta_t).encode()) 
         
+   if True:#(abs(int(dx))<500):
+        if 0:#(abs(speed)<2):
+             c2s.moveStop()
+        else:
+             if(speed>0):
+                  c2s.moveLeft(speed)  # -----------------возможно поменять местами -------------
+             else:
+                  c2s.moveRight(abs(speed))
 
 
 
@@ -53,14 +61,13 @@ class tracker:
 
 
 
-
-   if(abs(int(dx))<500):
+   '''if(abs(int(dx))<500):
     if(abs(int(dx))<10):
      c2s.moveStop()
     else:
      if(int(dx)>0):
       c2s.moveLeft(5)
      else:
-      c2s.moveRight(5)
+      c2s.moveRight(5)'''
 #            return
   c2s.__finit__
