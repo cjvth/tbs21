@@ -33,7 +33,7 @@ def hamming_decode(message: list):
     return count
 
 
-def converter(filein: BytesIO, fileout: BytesIO, filelog: BytesIO):
+def decoder(filein: BytesIO, fileout: BytesIO, filelog: BytesIO):
     while True:
         a = [filein.read(1) for i in range(3)]
         if not a[0] or not a[1] or not a[2]:
