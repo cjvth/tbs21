@@ -1,7 +1,7 @@
 from client2server import client2server
 
 class tracker:
- def run(tracklog):
+ def run(tracklog: StringIO):
   c2s=client2server()
   i=0
   while i==0:
