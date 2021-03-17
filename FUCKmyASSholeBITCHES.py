@@ -13,7 +13,7 @@ class tracker:
   i=0
   max_speed=80
   K_p=1.2
-  K_d=0.5
+  K_d=0.05
   K_i=0.3
   I=0
   last_dx=0
@@ -43,7 +43,7 @@ class tracker:
 
    speed=K_p*P+K_d*D+K_i*I
    speed=arduino_constrain(speed,-max_speed,max_speed)
-   tracklog.write("Received dx = {},I ={},D ={},  speed ={} , delta_t={}  \n".format(dx,round(I,1),round(D,1),speed,delta_t).encode()) 
+   tracklog.write("Received dx = {},I ={},D ={},  speed ={} , delta_t={}  \n".format(dx,round(I,1),D,speed,delta_t).encode()) 
         
    if True:#(abs(int(dx))<500):
         if 0:#(abs(speed)<2):
