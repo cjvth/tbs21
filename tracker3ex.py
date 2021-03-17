@@ -13,7 +13,7 @@ class tracker:
    position=0
    ticks=0
    key0=0 
-   tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
+   tracklog.write("Received {} \n".format(dx).encode())# % (dx,state,position,ticks,key0))
    if(abs(int(dx))<500):
     if(abs(int(dx))<10):
      c2s.moveStop()
@@ -23,4 +23,4 @@ class tracker:
      else:
       c2s.moveRight(4)
 #            return
-  c2s.__finit__
+#  c2s.__finit__
