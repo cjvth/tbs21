@@ -21,7 +21,7 @@ class tracker:
 
 
   max_speed=55
-  K_p=1
+  K_p=0.1
   K_d=0
   K_i=0
   I=0
