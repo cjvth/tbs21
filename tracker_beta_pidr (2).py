@@ -29,14 +29,14 @@ class tracker:
   delta_t=0.1
   f=1
     
-  
+  speed=0
   while i==0:
    
    
     status=c2s.getStatus()
     dx=int(status)&0x0fff
-
-
+    
+    tracklog.write("Received dx = {},  speed ={}  \n".format(dx,speed).encode())
 
     if(dx>2048):
         dx=dx-4096
@@ -57,7 +57,7 @@ class tracker:
 
     speed=K_p*P+K_d*D+K_i*I
     speed=arduino_constrain(speed,-max_speed,max_speed)
-    tracklog.write("Received dx = {},  speed = {} \n".format(dx,speed).encode())#tracklog.write('dx - {')#("Received %d %d %d %d %d\n" % (dx,state,position,ticks,speed))
+    #tracklog.write("Received dx = {},  speed = {} \n".format(dx,speed).encode())#tracklog.write('dx - {')#("Received %d %d %d %d %d\n" % (dx,state,position,ticks,speed))
     if True:#(abs(int(dx))<500):
         if 0:#(abs(speed)<2):
              c2s.moveStop()
