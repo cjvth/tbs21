@@ -19,8 +19,8 @@ class tracker:
      c2s.moveStop()
     else:
      if(int(dx)>0):
-      c2s.moveLeft(15)
+      c2s.moveLeft(4)
      else:
-      c2s.moveRight(15)
+      c2s.moveRight(4)
 #            return
   c2s.__finit__
