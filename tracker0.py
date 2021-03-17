@@ -9,7 +9,12 @@ class tracker:
    dx=int(status)&0x0fff
    if(dx>2048):
     dx=dx-4096
-   tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
+   c=0
+   ticks=0
+   key0=0
+   state=0
+   position=0
+   tracklog.write("Received %d %d %d %d %d\n" % (dx,state,c,ticks,key0))
    if(abs(int(dx))<500):
     if(abs(int(dx))<10):
      c2s.moveStop()
