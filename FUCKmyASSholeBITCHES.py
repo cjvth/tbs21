@@ -1,5 +1,5 @@
 from client2server import client2server
-
+import time
 class tracker:
  def run(tracklog):
   c2s=client2server()
@@ -19,8 +19,14 @@ class tracker:
     dx=dx-4096
       
    tracklog.write("Received dx = {},  speed ={}  \n".format(0,1).encode())#tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
-   
-   
+   sec=time.time()    
+   #sec=time.time()
+   if f==1:
+        f=0
+   else:
+    	delta_t=sec-last_sec
+   last_sec=sec
+
     
 
 
