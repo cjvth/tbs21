@@ -16,18 +16,15 @@ class tracker:
 
  # for i in range(0,100):
 #   time.sleep(1)
-    
 
-
-
-
-
-  
 
   
   while i==0:
    status=c2s.getStatus()
+   
    dx=int(status)&0x0fff
+   tracklog.write("dx = {}\n".format(dx).encode()) 
+
    #speed=int(arduino_map(abs(int(dx)),0,4096,0,100))
    if(dx>2048):
         dx=dx-4096
