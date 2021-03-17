@@ -40,7 +40,7 @@ class tracker:
    P=dx
    D=-(dx-last_dx)/delta_t
    #D=arduino_constrain(D,-1700,1700)
-   if abs(D)>1700:
+   if abs(D)>1000:
       D=0
    I=I+dx*delta_t
    last_dx=dx
