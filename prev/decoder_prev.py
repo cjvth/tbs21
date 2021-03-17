@@ -34,13 +34,19 @@ def hamming_decode(message: list):
 
 
 def decoder(filein: BytesIO, fileout: BytesIO, filelog: BytesIO):
+    a = [filein.read(1) for i in range(2)]
     while True:
-        a = [filein.read(1) for i in range(3)]
-        if not a[0] or not a[1] or not a[2]:
+        if not a[0] or not a[1]:
             break
         a = [[int(i) for i in bin(int.from_bytes(i, 'big'))[2:].rjust(8, '0')] for i in a]
-        b = [a[0] + a[1][:4], a[1][4:] + a[2]]
+        b = [i[:7] for i in a]
         b = [hamming_decode(i) for i in b]
-        b = [int(''.join(map(str, i)), 2) for i in b]
-        for i in b:
-            fileout.write(i.to_bytes(1, 'big'))
+        b = b[0] + b[1]
+        b = int(''.join(map(str, b)), 2)
+        fileout.write(b.to_bytes(1, 'big'))
+        a = [filein.read(1) for i in range(2)]
+
+
+
+if __name__ == '__main__':
+    decoder(open('buf.txt', 'rb'), open('out.txt', 'wb'), open('test.txt', 'rb'))

@@ -20,13 +20,14 @@ def hamming_encode(data: list):
 
 
 def encoder(filein: BytesIO, fileout: BytesIO):
-    while True:
-        a = [filein.read(1) for i in range(2)]
-        if not a[0] or not a[1]:
-            break
-        a = [[int(i) for i in bin(int.from_bytes(i, 'big'))[2:].rjust(8, '0')] for i in a]
-        b = [hamming_encode(i) for i in a]
-        b = [b[0][:8], b[0][8:] + b[1][:4], b[1][4:]]
+    a = filein.read(1)
+    while a:
+        a = [int(i) for i in bin(int.from_bytes(a, 'big'))[2:].rjust(8, '0')]
+        b = [hamming_encode(a[:4]) + [0], hamming_encode(a[4:]) + [0]]
         b = [int(''.join(map(str, i)), 2) for i in b]
         for i in b:
             fileout.write(i.to_bytes(1, 'big'))
+        a = filein.read(1)
+
+if __name__ == '__main__':
+    encoder(open('test.txt', 'rb'), open('buf.txt', 'wb'))
