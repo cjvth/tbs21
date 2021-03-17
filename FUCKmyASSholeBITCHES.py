@@ -13,7 +13,7 @@ class tracker:
   i=0
   max_speed=100
   K_p=0.96
-  K_d=-0.055
+  K_d=0.055
   K_i=0.069
   I=0
   last_dx=0
@@ -38,7 +38,7 @@ class tracker:
 
 
    P=dx
-   D=(dx-last_dx)/delta_t
+   D=-(dx-last_dx)/delta_t
    D=arduino_constrain(D,-1700,1700)
    #if abs(D)>1700:
     #  D=0
