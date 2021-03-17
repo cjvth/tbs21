@@ -24,7 +24,8 @@ class tracker:
    dx=int(status)&0x0fff
    if(dx>2048):
     dx=dx-4096
-      
+   if  dx==-1536:
+      dx=last_dx
    #tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
    sec=time.time()    
    #sec=time.time()
