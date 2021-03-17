@@ -1,6 +1,6 @@
 from client2server import client2serve
 
-import time
+#####import time
 
 def arduino_map(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
@@ -42,7 +42,7 @@ class tracker:
         dx=dx-4096
 
 
-    sec=time.time()
+    sec=1#####time.time()
     if f==1:
         f=0
     else:
