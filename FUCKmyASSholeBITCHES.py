@@ -13,8 +13,8 @@ class tracker:
   i=0
   max_speed=80
   K_p=0.85
-  K_d=-0.02
-  K_i=0.03
+  K_d=-0.035
+  K_i=0.045
   I=0
   last_dx=0
   delta_t=0.1
