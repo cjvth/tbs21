@@ -57,7 +57,7 @@ class tracker:
 
     speed=K_p*P+K_d*D+K_i*I
     speed=arduino_constrain(speed,-max_speed,max_speed)
-    #tracklog.write('dx - {')#("Received %d %d %d %d %d\n" % (dx,state,position,ticks,speed))
+    tracklog.write("Received {} \n".format(dx).encode())#tracklog.write('dx - {')#("Received %d %d %d %d %d\n" % (dx,state,position,ticks,speed))
     if True:#(abs(int(dx))<500):
         if 0:#(abs(speed)<2):
              c2s.moveStop()
@@ -67,6 +67,5 @@ class tracker:
              else:
                   c2s.moveRight(abs(speed))
 #               return
-   # ----------почему return закоменчен------------
-
-c2s.__finit__
+  
+#c2s.__finit__
