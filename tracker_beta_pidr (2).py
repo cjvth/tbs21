@@ -7,9 +7,9 @@ def arduino_map(x, in_min, in_max, out_min, out_max):
 
 def arduino_constrain(x,min_x,max_x):
     if x>=max_x:
-	return max_x
+        return max_x
     if x<=min_x:
-	return min_x
+        return min_x
     return round(x)
   
 
@@ -33,23 +33,23 @@ class tracker:
   while i==0:
    
    
-   status=c2s.getStatus()
-   dx=int(status)&0x0fff
+    status=c2s.getStatus()
+    dx=int(status)&0x0fff
 
 
 
-   if(dx>2048):
+    if(dx>2048):
         dx=dx-4096
 
 
     sec=time.time()
     if f==1:
-	f=0
+        f=0
     else:
     	delta_t=sec-last_sec
     last_sec=sec
 
-------------------------------------
+#------------------------------------
     P=dx
     D=(dx-last_dx)/delta_t
     I=I+dx*delta_t
@@ -59,14 +59,14 @@ class tracker:
     speed=constrain(speed,-max_speed,max_speed)
    
     if True:#(abs(int(dx))<500):
-	if 0:#(abs(speed)<2):
+        if 0:#(abs(speed)<2):
              c2s.moveStop()
         else:
              if(speed>0):
-                  c2s.moveLeft(speed)   -----------------возможно поменять местами -------------
+                  c2s.moveLeft(speed)  # -----------------возможно поменять местами -------------
              else:
                   c2s.moveRight(abs(speed))
 #               return
-    ----------почему return закоменчен------------
+   # ----------почему return закоменчен------------
 
 c2s.__finit__
