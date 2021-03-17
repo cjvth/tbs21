@@ -13,7 +13,7 @@ class tracker:
   i=0
   max_speed=80
   K_p=1.05
-  K_d=-0.1
+  K_d=-0.5
   K_i=0.4
   I=0
   last_dx=0
@@ -47,8 +47,8 @@ class tracker:
    tracklog.write("Received dx = {},I ={},D ={},  speed ={} , delta_t={}  \n".format(dx,round(I,1),D,speed,delta_t).encode()) 
         
    if True:#(abs(int(dx))<500):
-        if 0:#(abs(speed)<2):
-             c2s.moveStop()
+       # if 0:#(abs(speed)<2):
+        #     c2s.moveStop()
         else:
              if(speed>0):
                   c2s.moveLeft(speed)  # -----------------возможно поменять местами -------------
