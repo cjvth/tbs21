@@ -4,6 +4,14 @@ class tracker:
  def run(tracklog):
   c2s=client2server()
   i=0
+  max_speed=55
+  K_p=10
+  K_d=0
+  K_i=0
+  I=0
+  last_dx=0
+  delta_t=0.1
+  f=1  
   while i==0:
    status=c2s.getStatus()
    dx=int(status)&0x0fff
@@ -11,16 +19,9 @@ class tracker:
     dx=dx-4096
       
    tracklog.write("Received dx = {},  speed ={}  \n".format(0,1).encode())#tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
-   max_speed=55
-   K_p=10
-   K_d=0
-   K_i=0
-   I=0
-   last_dx=0
-   delta_t=0.1
-   f=1   
-
-
+   
+   
+    
 
 
 
