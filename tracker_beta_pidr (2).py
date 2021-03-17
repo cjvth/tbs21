@@ -16,6 +16,8 @@ def arduino_constrain(x,min_x,max_x):
 
 class tracker:
  def run(tracklog):
+     
+  tracklog.write("Received dx = {},  speed ={}  \n".format(1,1).encode())
   c2s=client2server()
   i=0
 
