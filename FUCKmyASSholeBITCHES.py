@@ -47,8 +47,8 @@ class tracker:
    tracklog.write("Received dx = {},I ={},D ={},  speed ={} , delta_t={}  \n".format(dx,round(I,1),D,speed,delta_t).encode()) 
         
    if True:#(abs(int(dx))<500):
-       # if 0:#(abs(speed)<2):
-        #     c2s.moveStop()
+        if 0:#(abs(speed)<2):
+             c2s.moveStop()
         else:
              if(speed>0):
                   c2s.moveLeft(speed)  # -----------------возможно поменять местами -------------
