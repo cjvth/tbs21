@@ -19,7 +19,7 @@ def hamming_encode(data: list):
     return data
 
 
-def converter(filein: BytesIO, fileout: BytesIO):
+def encoder(filein: BytesIO, fileout: BytesIO):
     while True:
         a = [filein.read(1) for i in range(2)]
         if not a[0] or not a[1]:
