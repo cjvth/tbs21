@@ -11,7 +11,7 @@ class tracker:
  def run(tracklog):
   c2s=client2server()
   i=0
-  max_speed=55
+  max_speed=80
   K_p=1
   K_d=0
   K_i=0
