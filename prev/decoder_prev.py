@@ -34,37 +34,13 @@ def hamming_decode(message: list):
 
 
 def converter(filein: BytesIO, fileout: BytesIO, filelog: BytesIO):
-    times = []
     while True:
-        entry = filelog.read(4)
-        if not entry:
+        a = [filein.read(1) for i in range(3)]
+        if not a[0] or not a[1] or not a[2]:
             break
-        entry = int.from_bytes(entry, 'big')
-        if len(times) > 0 and times[-1][1] != entry % 256:
-            times.append((entry // 256, entry % 256))
-        elif len(times) == 0:
-            times.append((0, entry % 256))
-    cur_t = 0
-    data = []
-    while True:
-        time = filein.read(4)
-        time = int.from_bytes(time, 'big')
-        data = [filein.read(1) for i in range(4)]
-        while cur_t + 1 < len(times) and time > times[cur_t + 1][0]:
-            cur_t += 1
-        a = [filein.read(1) for i in range(4)]
-        for i in a:
-            if not a:
-                break
-        a = [int.from_bytes(i, 'big') for i in a]
-        for i in range(4):
-            a[i] ^= times[cur_t]
-        a = [[int(i) for i in bin(i)[2:].rjust(8, '0')] for i in a]
-        data += a
-        while len(data) >= 3:
-            b = [data[0] + data[1][:4], data[1][4:] + data[2]]
-            data = data[3:]
-            b = [hamming_decode(i) for i in b]
-            b = [int(''.join(map(str, i)), 2) for i in b]
-            for i in b:
-                fileout.write(i.to_bytes(1, 'big'))
+        a = [[int(i) for i in bin(int.from_bytes(i, 'big'))[2:].rjust(8, '0')] for i in a]
+        b = [a[0] + a[1][:4], a[1][4:] + a[2]]
+        b = [hamming_decode(i) for i in b]
+        b = [int(''.join(map(str, i)), 2) for i in b]
+        for i in b:
+            fileout.write(i.to_bytes(1, 'big'))
