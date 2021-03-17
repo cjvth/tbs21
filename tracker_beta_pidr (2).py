@@ -28,6 +28,9 @@ class tracker:
   last_dx=0
   delta_t=0.1
   f=1
+
+  tracklog.write("Received dx = {},  speed ={}  \n".format(0,1).encode())
+
     
   speed=0
   while i==0:
@@ -36,7 +39,7 @@ class tracker:
     status=c2s.getStatus()
     dx=int(status)&0x0fff
     
-    tracklog.write("Received dx = {},  speed ={}  \n".format(dx,speed).encode())
+    #tracklog.write("Received dx = {},  speed ={}  \n".format(dx,speed).encode())
 
     if(dx>2048):
         dx=dx-4096
