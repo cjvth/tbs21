@@ -1,5 +1,12 @@
 from client2server import client2server
 import time
+def arduino_constrain(x,min_x,max_x):
+    if x>=max_x:
+        return max_x
+    if x<=min_x:
+        return min_x
+    return round(x)
+  
 class tracker:
  def run(tracklog):
   c2s=client2server()
@@ -18,7 +25,7 @@ class tracker:
    if(dx>2048):
     dx=dx-4096
       
-   tracklog.write("Received dx = {},  speed ={}  \n".format(0,1).encode())#tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
+   #tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
    sec=time.time()    
    #sec=time.time()
    if f==1:
@@ -27,7 +34,17 @@ class tracker:
     	delta_t=sec-last_sec
    last_sec=sec
 
-    
+
+
+   P=dx
+   D=(dx-last_dx)/delta_t
+   I=I+dx*delta_t
+   last_dx=dx
+
+   speed=K_p*P+K_d*D+K_i*I
+   speed=arduino_constrain(speed,-max_speed,max_speed)
+   tracklog.write("Received dx = {},  speed ={} , delta_t={}  \n".format(dx,speed,delta_t).encode()) 
+        
 
 
 
