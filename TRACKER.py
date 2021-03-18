@@ -24,9 +24,8 @@ class tracker:
    dx=int(status)&0x0fff
    if(dx>2048):
     dx=dx-4096
-   if  dx==-1536:
-      dx=last_dx
-      #I=0
+   
+      
    #tracklog.write("Received %d %d %d %d %d\n" % (dx,state,position,ticks,key0))
    sec=time.time()    
    #sec=time.time()
@@ -37,8 +36,12 @@ class tracker:
    last_sec=sec
 
 
-
-   P=dx
+   if  dx==-1536:
+       dx=last_dx
+       I=0
+       P=0
+   else:    
+       P=dx
    D=-(dx-last_dx)/delta_t
    #D=arduino_constrain(D,-2000,2000)
    #if abs(D)>1000:
