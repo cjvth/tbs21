@@ -18,6 +18,7 @@ class tracker:
   I=0
   last_dx=0
   delta_t=0.01
+  TIME_COUNTER=0
   f=1  
   while i==0:
    status=c2s.getStatus()
@@ -39,9 +40,12 @@ class tracker:
    if  dx==-1536:
        dx=last_dx
        I=0
-       P=0
+       TIME_COUNTER+=delta_t
+       if TIME_COUNTER>=0.25
+           P=0
    else:    
        P=dx
+       TIME_COUNTER=0
    D=-(dx-last_dx)/delta_t
    #D=arduino_constrain(D,-2000,2000)
    #if abs(D)>1000:
