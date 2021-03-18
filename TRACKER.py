@@ -44,7 +44,7 @@ class tracker:
        dx=last_dx
        I=0
        TIME_COUNTER+=delta_t
-       if TIME_COUNTER>=0.25:
+       if TIME_COUNTER>=0.01:
            P=0
    else:    
        P=dx
