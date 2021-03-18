@@ -45,8 +45,10 @@ class tracker:
        dx=last_dx
        I=0
        P=0#
+       if dx>0:
            c2s.moveLeft(v_const)
        else:
+           
            c2s.moveRight(v_const)
        
        #TIME_COUNTER+=delta_t
