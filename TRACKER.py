@@ -19,8 +19,11 @@ class tracker:
   last_dx=0
   delta_t=0.01
   TIME_COUNTER=0
-  f=1  
+  f=1
+  c2s.moveLeft(4)
+  time.sleep(0.7)
   while i==0:
+   #c2s.moveLeft(4)   
    status=c2s.getStatus()
    dx=int(status)&0x0fff
    if(dx>2048):
