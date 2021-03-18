@@ -17,7 +17,7 @@ class tracker:
   K_i=0.16#0.15#0.12#0.087#0.085#0.079
   I=0
   last_dx=0
-  delta_t=0.1
+  delta_t=0.01
   f=1  
   while i==0:
    status=c2s.getStatus()
