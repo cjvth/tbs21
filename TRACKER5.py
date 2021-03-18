@@ -12,19 +12,15 @@ class tracker:
   c2s=client2server()
   i=0 
   max_speed=60#60
-  K_p=1.8#2#2#2#1.73#1.02
-  K_d=0.19#0.19#15#0.07#0.06##0.057#0.057
-  K_i=0.145#0.15#0.15#0.12#0.087#0.085#0.079
-  v_const=1.4
+  K_p=2#2#2#2#1.73#1.02
+  K_d=0.18#0.18#15#0.07#0.06##0.057#0.057
+  K_i=0.15#0.16#0.15#0.12#0.087#0.085#0.079
   I=0
   last_dx=0
   delta_t=0.01
   TIME_COUNTER=0
-  f=1
-  c2s.moveLeft(4)
-  time.sleep(0.4)
+  f=1  
   while i==0:
-   #c2s.moveLeft(4)   
    status=c2s.getStatus()
    dx=int(status)&0x0fff
    if(dx>2048):
@@ -44,17 +40,10 @@ class tracker:
    if  dx==-1536:
        dx=last_dx
        I=0
-       P=0#
-       if dx>0:
-           c2s.moveLeft(v_const)
-       else:
-           
-           c2s.moveRight(v_const)
-       
-       #TIME_COUNTER+=delta_t
-       #if TIME_COUNTER>=0.2:
-           #P=0
-   else:
+       TIME_COUNTER+=delta_t
+       if TIME_COUNTER>=0.25:
+           P=0
+   else:    
        P=dx
        TIME_COUNTER=0
    D=-(dx-last_dx)/delta_t
