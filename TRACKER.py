@@ -21,7 +21,7 @@ class tracker:
   TIME_COUNTER=0
   f=1
   c2s.moveLeft(4)
-  time.sleep(0.7)
+  time.sleep(0.4)
   while i==0:
    #c2s.moveLeft(4)   
    status=c2s.getStatus()
