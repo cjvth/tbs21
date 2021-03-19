@@ -5,7 +5,7 @@ using namespace std;
 #include <stdio.h>
 
 const int PORTION_SIZE= 2048;
-const int REPEATS = 2;
+const int REPEATS = 5;
 const int BATCH_SIZE = 4;
 const int BATCH_2_SIZE = (BATCH_SIZE * 8 + 6) / 7;
 
