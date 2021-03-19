@@ -36,7 +36,7 @@ void hamming_decode(char data[], char ret[], long len) {
 }
 
 
-int decoder(FILE* r_fifo, FILE* w_fifo, FILE* huynya)
+int decoder(FILE* r_fifo, FILE* w_fifo, FILE* moar)
 {
 
     map<long, vector<char>> data;
