@@ -14,7 +14,7 @@ class tracker:
   max_speed=60#60
   K_p=1.5#1.8#2#2#2#1.73#1.02
   K_d=0.27#0.21#0.19#0.19#15#0.07#0.06##0.057#0.057
-  K_i=0.155#0.145#0.145#0.15#0.15#0.12#0.087#0.085#0.079
+  K_i=0.16#0.145#0.145#0.15#0.15#0.12#0.087#0.085#0.079
   v_const=1
   I=0
   last_dx=0
@@ -22,7 +22,7 @@ class tracker:
   TIME_COUNTER=0
   f=1
   c2s.moveLeft(5)
-  time.sleep(0.4)
+  time.sleep(0.5)
   while i==0:
    #c2s.moveLeft(4)   
    status=c2s.getStatus()
