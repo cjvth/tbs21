@@ -5,7 +5,9 @@ using namespace std;
 #include <stdio.h>
 
 const int PORTION_SIZE= 2048;
-const int REPEATS = 8;
+const int REPEATS = 2;
+const int BATCH_SIZE = 4;
+const int BATCH_2_SIZE = (BATCH_SIZE * 8 + 6) / 7;
 void vi(int a)
 {
 	for(int i=7;i>=0;--i)
@@ -70,15 +72,15 @@ int encoder(FILE* r_fifo, FILE* w_fifo)
     while (s = fread(portion, sizeof(char), PORTION_SIZE, r_fifo)) {
         for (int _ = 0; _ < REPEATS; ++_) {
             long n_batch = n_batch_;
-            for (int i = 0; i < PORTION_SIZE; i += 256) {
+            for (int i = 0; i < s; i += BATCH_SIZE) {
                 char n_batch_c[2] = {192 | (n_batch / 64), 128 | (n_batch % 64)};
                 char n_batch_h[4];
                 hamming_encode(n_batch_c, n_batch_h, 2);
                 fwrite(n_batch_h, sizeof(char), 4, w_fifo);
                 char * curr = portion + i;
-                char data_c[293];
+                char data_c[BATCH_2_SIZE];
                 int j=7,m=0,n,k;
-                for(n=0;n<293;++n)
+                for(n=0;n<BATCH_2_SIZE;++n)
                 {
                     data_c[n]=0;
                     for (k = 6; k>=0; --k) {
@@ -91,13 +93,14 @@ int encoder(FILE* r_fifo, FILE* w_fifo)
                         }
                     }
                 }
-                fwrite(data_c, sizeof(char), 293, w_fifo);
+                char data_h[BATCH_2_SIZE*2];
+                hamming_encode(data_c, data_h, BATCH_2_SIZE);
+                fwrite(data_h, sizeof(char), BATCH_2_SIZE*2, w_fifo);
+                n_batch++;
             }
-            n_batch++;
         }
         n_batch_ = n_batch;
     }
-
  return 0;
 }
 
@@ -112,139 +115,150 @@ int decoder(FILE* r_fifo, FILE* w_fifo)
     long prevh_pos = -2;
     long prevh_num = -2;
     long prevh_cand_pos = -2;
-    char prevh_cand = 0;
+    char prevh_cand_num = 0;
     vector<char> got_data;
     bool getting_data = false;
-    while (s = fread(byte_h, sizeof(char), 2, r_fifo)) {
-        char byte[1];
-        hamming_decode(byte_h, byte, 1);
-        if (byte[0] & 192 == 192) {
-            prevh_cand = byte[0];
-            prevh_cand_pos = pos;
-            getting_data = false;
-        } else if (byte[0] & 192 == 128) {
-            if (prevh_cand_pos + 1 == pos) {
-                int num = ((prevh_cand & 63) << 6) |  (byte[0] & 63);
-                if (prevh_num + 1 == num && prevh_pos + 196 == pos) {
-                    if (got_data.size() != 293) cout << "problems with length";
-                    if (getting_data) {
 
-                        data[prevh_num] = got_data;
+        while (s = fread(byte_h, sizeof(char), 2, r_fifo)) {
+            char byte[1];
+            hamming_decode(byte_h, byte, 1);
+            if ((byte[0] & 192) == 192) {
+                prevh_cand_num = byte[0];
+                prevh_cand_pos = pos;
+                getting_data = false;
+            } else if ((byte[0] & 192) == 128) {
+                if (prevh_cand_pos + 1 == pos) {
+                    long num = ((prevh_cand_num & 63) << 6) |  (byte[0] & 63);
+                    if (prevh_num + 1 == num && prevh_pos + BATCH_2_SIZE + 3 == pos) {
+                        if (!got_data.empty()) {
+                            int j,m,n=0,k=7;
+                            vector<char> res(BATCH_SIZE);
+                            for(m=0;m<BATCH_SIZE;++m)
+                            {
+                               res[m]=0;
+                                for (j = 7; j>=0; --j) {
+                                    if(k==7)
+                                    {
+                                        --k;
+                                    }
+                                    res[m] |= (((got_data[n] & (1<<k))>>k)<<j);
+                                    --k;
+                                    if(k<0)
+                                    {
+                                        k=7;
+                                        ++n;
+                                    }
+                                }
+                            }
+                            data[prevh_num] = res;
+                        }
                     }
                     if (data.find(num) == data.end()) {
                         getting_data = true;
+                    } else {
                     }
                     got_data.clear();
+                    prevh_pos = pos - 1;
+                    prevh_num = num;
+                }
+            } else {
+                if (getting_data) {
+                    got_data.push_back(byte[0]);
                 }
             }
-        } else {
-            if (getting_data) {
-                got_data.append(byte[0]);
-            }
+            ++pos;
         }
-
-
-
-        ++pos;
+    for ( auto i: data){
+        for (auto j: i.second){
+            char data_h1[1];
+            data_h1[0] = j;
+            fwrite(data_h1, sizeof(char), 1, w_fifo);
+        }
     }
 
-
-
-
-
-//    char buf[PORTION_SIZE*2];
-//    char buf2[PORTION_SIZE];
-//    long s;
-//    s= fread( buf, sizeof(char), PORTION_SIZE*2, r_fifo);
-//    for(;s>0;)
-//    {
-//        hamming_decode(buf, buf2, PORTION_SIZE);
-//        if(s>1) fwrite(buf2, sizeof(char), s/2, w_fifo);
-//        s= fread(buf, sizeof(char), PORTION_SIZE*2, r_fifo);
-//    }
     return 0;
 }
 
 
 int main()
 {
-    FILE * r_fifo = fopen ( "file2.txt" , "rb" );
-    FILE * w_fifo = fopen ( "file2-out.txt" , "wb" );
-    char portion[256];
-    long s;
-    long n_batch_ = 73;
-    while (s = fread(portion, sizeof(char), 256, r_fifo)) {
-        long n_batch = n_batch_;
-        for (int _ = 0; _ < 1; ++_) {
-            for (int i = 0; i < 256; i += 256) {
-                char n_batch_c[2] = {128 | (n_batch / 64), 192 | (n_batch % 64)};
-                char n_batch_h[4];
-                hamming_encode(n_batch_c, n_batch_h, 2);
-                fwrite(n_batch_h, sizeof(char), 4, w_fifo);
-                char * curr = portion + i;
-
-                char data_c[293];
-                int j=7,m=0,n,k;
-                for(n=0;n<293;++n)
-                {
-                    data_c[n]=0;
-                    for (k = 6; k>=0; --k) {
-                        data_c[n] |= (((curr[m] & (1<<j))>>j)<<k);
-                        --j;
-                        if(j<0)
-                        {
-                            j=7;
-                            ++m;
-                        }
-                    }
-                }
+//    FILE * r_fifo = fopen ( "file2.txt" , "rb" );
+//    FILE * w_fifo = fopen ( "file2-out.txt" , "wb" );
+//    char portion[256];
+//    long s;
+//    long n_batch_ = 73;
+//    while (s = fread(portion, sizeof(char), 256, r_fifo)) {
+//        long n_batch = n_batch_;
+//        for (int _ = 0; _ < 1; ++_) {
+//            for (int i = 0; i < 256; i += 256) {
+//                char n_batch_c[2] = {128 | (n_batch / 64), 192 | (n_batch % 64)};
+//                char n_batch_h[4];
+//                hamming_encode(n_batch_c, n_batch_h, 2);
+//                fwrite(n_batch_h, sizeof(char), 4, w_fifo);
+//                char * curr = portion + i;
 //
-//                n=0;
-//                k=7;
-//                char test2[256];
-//                for(m=0;m<256;++m)
+//                char data_c[293];
+//                int j=7,m=0,n,k;
+//                for(n=0;n<293;++n)
 //                {
-//                   test2[m]=0;
-//                    for (j = 7; j>=0; --j) {
-//                        if(k==7)
+//                    data_c[n]=0;
+//                    for (k = 6; k>=0; --k) {
+//                        data_c[n] |= (((curr[m] & (1<<j))>>j)<<k);
+//                        --j;
+//                        if(j<0)
 //                        {
-//                            --k;
-//                        }
-//                        test2[m] |= (((data_c[n] & (1<<k))>>k)<<j);
-//                        --k;
-//                        if(k<0)
-//                        {
-//                            k=7;
-//                            ++n;
+//                            j=7;
+//                            ++m;
 //                        }
 //                    }
 //                }
+////
+////                n=0;
+////                k=7;
+////                char test2[256];
+////                for(m=0;m<256;++m)
+////                {
+////                   test2[m]=0;
+////                    for (j = 7; j>=0; --j) {
+////                        if(k==7)
+////                        {
+////                            --k;
+////                        }
+////                        test2[m] |= (((data_c[n] & (1<<k))>>k)<<j);
+////                        --k;
+////                        if(k<0)
+////                        {
+////                            k=7;
+////                            ++n;
+////                        }
+////                    }
+////                }
+//
+//                fwrite(data_c, sizeof(char), 297, w_fifo);
+//            }
+//        }
+//    }
+////    cin.get();
 
-                fwrite(data_c, sizeof(char), 297, w_fifo);
-            }
-        }
-    }
-//    cin.get();
 
 
 
 
 
 
-
-//    FILE * u = fopen ( "file.txt" , "rb" );
-//    FILE * f1 = fopen ( "buf-cpp.txt" , "wb" );
-//    encoder(u,f1);
-//    fclose (u);
-//    fclose (f1);
-//    cout << "\n\n\n\n\n";
-//    cin.get();
-//    FILE * f2 = fopen ( "rez-cpp.txt" , "wb" );
-//    FILE * f3 = fopen ( "buf2-cpp.txt" , "rb" );
-//    decoder(f3,f2);
-//    fclose (f2);
-//    fclose (f3);
-//    return 0;
+    FILE * u = fopen ( "file2.txt" , "rb" );
+    FILE * f1 = fopen ( "buf-cpp.txt" , "wb" );
+    encoder(u,f1);
+    fclose (u);
+    fclose (f1);
+    cout << "\n\n\n\n\n";
+    cin.get();
+    FILE * f2 = fopen ( "rez-cpp.txt" , "wb" );
+    FILE * f3 = fopen ( "buf-cpp.txt" , "rb" );
+    decoder(f3,f2);
+    fclose (f2);
+    fclose (f3);
+    return 0;
 }
 
 
