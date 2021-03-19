@@ -6,8 +6,8 @@ using namespace std;
 
 namespace dec {
 const int PORTION_SIZE= 2048;
-const int REPEATS = 5;
-const int BATCH_SIZE = 4;
+const int REPEATS = 3;
+const int BATCH_SIZE = 256;
 const int BATCH_2_SIZE = (BATCH_SIZE * 8 + 6) / 7;
 }
 
