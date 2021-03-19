@@ -3,6 +3,8 @@
 #include <vector>
 using namespace std;
 #include <stdio.h>
+#include <encoder6.cpp>
+#include <decoder6.cpp>
 
 const int PORTION_SIZE= 2048;
 const int REPEATS = 2;
