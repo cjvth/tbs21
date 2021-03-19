@@ -62,11 +62,11 @@ int decoder(FILE* r_fifo, FILE* w_fifo, FILE* moar)
             } else if ((byte[0] & 192) == 128) {
                 if (prevh_cand_pos + 1 == pos) {
                     long num = ((prevh_cand_num & 63) << 6) |  (byte[0] & 63);
-                    if (prevh_num + 1 == num && prevh_pos + BATCH_2_SIZE + 3 == pos) {
+                    if (prevh_num + 1 == num && prevh_pos + dec::BATCH_2_SIZE + 3 == pos) {
                         if (!got_data.empty()) {
                             int j,m,n=0,k=7;
-                            vector<char> res(BATCH_SIZE);
-                            for(m=0;m<BATCH_SIZE;++m)
+                            vector<char> res(dec::BATCH_SIZE);
+                            for(m=0;m<dec::BATCH_SIZE;++m)
                             {
                                res[m]=0;
                                 for (j = 7; j>=0; --j) {
@@ -104,8 +104,8 @@ int decoder(FILE* r_fifo, FILE* w_fifo, FILE* moar)
 
 
     int j,m,n=0,k=7;
-    vector<char> res(BATCH_SIZE);
-    for(m=0;m<BATCH_SIZE;++m)
+    vector<char> res(dec::BATCH_SIZE);
+    for(m=0;m<dec::BATCH_SIZE;++m)
     {
        res[m]=0;
         for (j = 7; j>=0; --j) {
